@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const AttendanceSchema = new mongoose.Schema({
   subject: { type: mongoose.Schema.Types.ObjectId, ref: 'Subject', required: true },
   classDate: Date,
-  classCode: { type: String, unique: true },
+  classCode: { type: String },
   attendanceRecords: [{
     student: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     signInTime: Date,
