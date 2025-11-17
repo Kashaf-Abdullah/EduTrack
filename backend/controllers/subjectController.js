@@ -55,6 +55,31 @@ export const getSubjectById = async (req, res) => {
   }
 };
 
+
+export const addStudentToSubject = async (req, res) => {
+  try {
+    const subjectId = req.params.id;
+    const { studentId } = req.body;
+
+    // Optional: check if user is teacher/admin and owns this subject
+
+    const updatedSubject = await Subject.findByIdAndUpdate(
+      subjectId,
+      { $addToSet: { students: studentId } }, // prevents duplicates
+      { new: true }
+    ).populate('students', 'name email');
+
+    if (!updatedSubject) {
+      return res.status(404).json({ message: 'Subject not found' });
+    }
+
+    res.json(updatedSubject);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 // Update subject (only teacher who owns it or admin)
 export const updateSubject = async (req, res) => {
   try {

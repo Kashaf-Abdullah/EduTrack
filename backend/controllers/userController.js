@@ -10,6 +10,15 @@ export const getPendingUsers = async (req, res) => {
   }
 };
 
+export const getApprovedUsers = async (req, res) => {
+  try {
+    const users = await User.find({ approved: true});
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Approve a user
 export const approveUser = async (req, res) => {
   try {

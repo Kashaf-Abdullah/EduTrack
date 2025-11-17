@@ -1,38 +1,6 @@
 import Attendance from '../models/attendanceModel.js';
 import Subject from '../models/subjectModel.js';
 
-// Mark attendance for a class session with unique classCode
-// export const markAttendance = async (req, res) => {
-//   try {
-//     const { subjectId, classDate, classCode, attendanceRecords } = req.body;
-//     const teacherId = req.user._id;
-
-//     // Verify teacher owns the subject
-//     const subject = await Subject.findOne({ _id: subjectId, teacher: teacherId });
-//     if (!subject) {
-//       return res.status(403).json({ message: 'Not authorized to mark attendance for this subject' });
-//     }
-
-//     // Check if attendance for this classCode already exists
-//     let attendance = await Attendance.findOne({ classCode });
-
-//     if (attendance) {
-//       return res.status(400).json({ message: 'Attendance for this class session already recorded' });
-//     }
-
-    // attendance = new Attendance({
-    //   subject: subjectId,
-    //   classDate,
-    //   classCode,
-    //   attendanceRecords, // Array of {student, signInTime, signOutTime, present}
-    // });
-
-    // await attendance.save();
-//     res.status(201).json(attendance);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 
 export const markAttendance = async (req, res) => {
   try {
