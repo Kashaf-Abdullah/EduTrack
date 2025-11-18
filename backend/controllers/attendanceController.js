@@ -1,7 +1,7 @@
 import Attendance from '../models/attendanceModel.js';
 import Subject from '../models/subjectModel.js';
 
-
+//STUDNET mark attenadace
 export const markAttendance = async (req, res) => {
   try {
     const {
@@ -12,10 +12,10 @@ export const markAttendance = async (req, res) => {
     } = req.body;
 
     // Verify teacher owns the subject
-    const subject = await Subject.findOne({ _id: subjectId, teacher: req.user._id });
-    if (!subject) {
-      return res.status(403).json({ message: 'Not authorized to mark attendance for this subject' });
-    }
+    // const subject = await Subject.findOne({ _id: subjectId, teacher: req.user._id });
+    // if (!subject) {
+    //   return res.status(403).json({ message: 'Not authorized to mark attendance for this subject' });
+    // }
 
     // Find attendance document for this classCode/session
     let attendance = await Attendance.findOne({ subject: subjectId, classCode });
@@ -48,6 +48,9 @@ export const markAttendance = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 }
+//studnet mark atteandacne
+
+
 
 // Get attendance records for a subject
 export const getAttendanceBySubject = async (req, res) => {
@@ -80,6 +83,48 @@ export const getAttendanceByStudent = async (req, res) => {
     }
 
     const attendanceRecords = await Attendance.find({ 'attendanceRecords.student': studentId }).populate('subject', 'name');
+    res.json(attendanceRecords);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// GET /api/attendance/teacher/:teacherId?classId=&date=
+export const getAttendanceForTeacher = async (req, res) => {
+  try {
+    const teacherId = req.params.teacherId; // This should be MongoDB ObjectId
+    const { classId, date } = req.query;
+
+    // Find subjects taught by this teacher
+    const subjects = await Subject.find({ teacher: teacherId });
+    const subjectIds = subjects.map(sub => sub._id.toString());
+
+    // Make sure classId is _id, not name
+    if (classId && !subjectIds.includes(classId)) {
+      return res.status(403).json({ message: 'Access denied: You do not teach this class.' });
+    }
+
+    let filter = {};
+    if (classId) {
+      filter.subject = classId;
+    } else {
+      filter.subject = { $in: subjectIds };
+    }
+
+    if (date) {
+      const dayStart = new Date(date);
+      dayStart.setHours(0, 0, 0, 0);
+      const dayEnd = new Date(date);
+      dayEnd.setHours(23, 59, 59, 999);
+      filter.classDate = { $gte: dayStart, $lte: dayEnd };
+    }
+
+    const attendanceRecords = await Attendance.find(filter)
+      .populate('subject', 'name')
+      .populate('attendanceRecords.student', 'name email')
+      .sort({ classDate: -1 });
+
     res.json(attendanceRecords);
   } catch (error) {
     res.status(500).json({ message: error.message });

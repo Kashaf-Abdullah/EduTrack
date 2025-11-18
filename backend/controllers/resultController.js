@@ -62,3 +62,28 @@ export const getResultsForStudent = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+export const getAllResultByTeacher = async (req, res) => {
+  try {
+    // Add proper check for req.user existence
+    if (!req.user) {
+      return res.status(401).json({ message: 'Authentication required' });
+    }
+
+    // Fix the comparison - convert both to string for proper comparison
+    if (req.user._id.toString() !== req.params.teacherId && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    const results = await Result.find({ teacher: req.params.teacherId })
+      .populate('student', 'name email')
+      .populate('subject', 'name')
+      .sort({ createdAt: -1 });
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error in getAllResultByTeacher:', error);
+    res.status(500).json({ message: error.message });
+  }
+}

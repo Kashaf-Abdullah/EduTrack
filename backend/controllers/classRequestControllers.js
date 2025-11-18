@@ -20,21 +20,31 @@ export const submitClassRequest = async (req, res) => {
 };
 
 // Teacher gets pending requests for their classes
+// In your classRequestControllers.js - ensure proper ID handling
 export const getPendingRequestsForTeacher = async (req, res) => {
   try {
     const teacherId = req.params.teacherId;
+
+    // Add validation for teacherId
+    if (!teacherId || teacherId === 'undefined') {
+      return res.status(400).json({ message: 'Invalid teacher ID' });
+    }
 
     // Find all classes owned by teacher
     const classes = await Subject.find({ teacher: teacherId });
     const classIds = classes.map(c => c._id);
 
     // Find all pending requests for those classes
-    const requests = await ClassRequest.find({ class: { $in: classIds }, status: 'pending' })
+    const requests = await ClassRequest.find({ 
+      class: { $in: classIds }, 
+      status: { $in: ['pending', 'rejected'] } // Include both statuses
+    })
       .populate('student', 'name email')
       .populate('class', 'name');
 
     res.json(requests);
   } catch (error) {
+    console.error('Error in getPendingRequestsForTeacher:', error);
     res.status(500).json({ message: error.message });
   }
 };
