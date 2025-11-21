@@ -88,3 +88,18 @@ export const rejectClassRequest = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+// Controller
+export const getRequestsByStudent = async (req, res) => {
+  try {
+    const studentId = req.params.studentId;
+    const requests = await ClassRequest.find({ student: studentId })
+      .populate('class', 'name')
+      .populate('student', 'name email');
+    res.json(requests);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+

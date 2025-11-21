@@ -1,5 +1,6 @@
 import Subject from '../models/subjectModel.js';
-
+import { v4 as uuidv4 } from 'uuid';
+    const uniqueClassCode = uuidv4(); 
 // Create a new subject (teacher or admin)
 export const createSubject = async (req, res) => {
   try {
@@ -13,6 +14,7 @@ export const createSubject = async (req, res) => {
       classTimings,
       courseContent,
       students: [],
+        classCode: uniqueClassCode 
     });
 
     await subject.save();
@@ -30,7 +32,11 @@ export const getSubjects = async (req, res) => {
       subjects = await Subject.find().populate('teacher', 'name email');
     } else if (req.user.role === 'teacher') {
       subjects = await Subject.find({ teacher: req.user._id }).populate('students', 'name email');
-    } else {
+    }
+    else if (req.user.role === 'student') {
+  subjects = await Subject.find({ students: { $ne: req.user._id } }).populate('teacher', 'name email');
+}
+    else {
       return res.status(403).json({ message: 'Access denied' });
     }
     res.json(subjects);
@@ -115,6 +121,19 @@ export const deleteSubject = async (req, res) => {
 
     await subject.deleteOne();
     res.json({ message: 'Subject deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const getSubjectsForStudent = async (req, res) => {
+  try {
+    const studentId = req.user._id;
+    const subjects = await Subject.find({ students: studentId })
+      .populate('teacher', 'name email')
+      .populate('students', 'name email');
+    res.json(subjects);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
