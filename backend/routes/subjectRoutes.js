@@ -4,7 +4,7 @@ import {
   getSubjects,
   getSubjectById,
   updateSubject,
-  deleteSubject, addStudentToSubject
+  deleteSubject, addStudentToSubject,getSubjectsForStudent
 } from '../controllers/subjectController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -18,5 +18,7 @@ router.get('/:id', getSubjectById);
 router.put('/:id', updateSubject);
 router.delete('/:id', deleteSubject);
 router.post('/:id/add-student',  addStudentToSubject);
+router.get('/student/enrolled',  getSubjectsForStudent);
+
 
 export default router;

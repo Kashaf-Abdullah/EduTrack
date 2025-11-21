@@ -11,6 +11,7 @@ const SubjectSchema = new mongoose.Schema({
     endTime: String,
   }],
   courseContent: String,
+  classCode: { type: String, unique: true, required: true }, // Add required + unique
 }, { timestamps: true });
 
 export default mongoose.model('Subject', SubjectSchema);
