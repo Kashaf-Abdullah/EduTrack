@@ -3,7 +3,7 @@ import useAuth from '../hooks/useAuth';
 import AdminDashboard from '../components/AdminDashboard/AdminDashboard';
 import TeacherDashboard from '../components/TeacherDashbaord/TeacherDashboard';
 // import TeacherDashboard from '../components/TeacherDashboard/TeacherDashboard';
-// import StudentDashboard from '../components/StudentDashboard/StudentDashboard';
+import StudentDashboard from '../components/StudentDashbaord/StudentDashboard';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -15,8 +15,8 @@ const Dashboard = () => {
       return <AdminDashboard />;
     case 'teacher':
       return <TeacherDashboard />;
-    // case 'student':
-    //   return <StudentDashboard />;
+    case 'student':
+      return <StudentDashboard />;
     default:
       return <div>Unauthorized: Role not recognized</div>;
   }
