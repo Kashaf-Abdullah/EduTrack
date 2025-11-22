@@ -4,9 +4,10 @@ import {
   getSubjects,
   getSubjectById,
   updateSubject,
-  deleteSubject, addStudentToSubject,getSubjectsForStudent
+  deleteSubject, addStudentToSubject,getSubjectsForStudent,
+  getAllStudentSubjectDetailsForAdmin
 } from '../controllers/subjectController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { protect,admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -19,6 +20,5 @@ router.put('/:id', updateSubject);
 router.delete('/:id', deleteSubject);
 router.post('/:id/add-student',  addStudentToSubject);
 router.get('/student/enrolled',  getSubjectsForStudent);
-
-
+router.get('/admin/students',admin,getAllStudentSubjectDetailsForAdmin)
 export default router;

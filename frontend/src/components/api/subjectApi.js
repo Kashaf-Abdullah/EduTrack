@@ -15,3 +15,11 @@ export const createSubject = async (subjectData, token) => {
   });
   return res.data;
 };
+
+
+export const getAllDetailStudentSuject = async (teacherId, token) => {
+  const res = await axios.get(`${BASE_URL}/admin/students`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};

@@ -10,6 +10,7 @@ import attendanceRoutes from './routes/attendanceRoutes.js';
 import publicInfoRoutes from './routes/publicInfoRoutes.js'
 import announcementsRoutes from './routes/announcementRoutes.js'
 import classRequestRoutes from './routes/classRequestRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/public-info', publicInfoRoutes);
 app.use('/api/announcements', announcementsRoutes);
 app.use('/api/class-requests', classRequestRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 
