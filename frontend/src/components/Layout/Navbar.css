@@ -1,0 +1,169 @@
+.navbar {
+  background: white;
+  padding: 0 20px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1d1145;
+}
+
+.menu-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.navbar-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1d1145;
+  margin: 0;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.welcome-text {
+  color: #1d1145;
+  font-weight: 500;
+  display: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.user-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.user-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.user-avatar-sm {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 1rem;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 15px;
+  z-index: 1000;
+  border: 1px solid #e0e0e0;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.user-email {
+  display: block;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.user-role-badge {
+  display: inline-block;
+  background: #0db4b9;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  margin-bottom: 12px;
+}
+
+.logout-btn {
+  background: #e76d89;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #d45a75;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 15px;
+  }
+  
+  .navbar-title {
+    font-size: 1.2rem;
+  }
+  
+  .menu-btn {
+    display: flex; /* Always show menu button on mobile */
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+  .welcome-text {
+    display: block;
+  }
+  
+  .menu-btn {
+    display: none; /* Hide menu button on desktop */
+  }
+}

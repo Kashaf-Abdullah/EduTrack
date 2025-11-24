@@ -1,0 +1,45 @@
+:root {
+  /* Primary Colors */
+  --deep-purple: #1d1145;
+  --trapper-keeper-green: #0db4b9;
+  --pink-boot: #f2a1a1;
+  --modern-pink-backpack: #e76d89;
+  
+  /* Semantic Colors */
+  --primary: var(--deep-purple);
+  --secondary: var(--trapper-keeper-green);
+  --accent-1: var(--modern-pink-backpack);
+  --accent-2: var(--pink-boot);
+  
+  /* Background Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-dark: var(--deep-purple);
+  
+  /* Text Colors */
+  --text-primary: #1d1145;
+  --text-secondary: #6c757d;
+  --text-light: #ffffff;
+  --text-accent: var(--modern-pink-backpack);
+  
+  /* Border Colors */
+  --border-light: #e0e0e0;
+  --border-medium: #dee2e6;
+  --border-accent: var(--trapper-keeper-green);
+  
+  /* State Colors */
+  --success: #28a745;
+  --warning: #ffc107;
+  --error: #dc3545;
+  --info: var(--trapper-keeper-green);
+  
+  /* Hover States */
+  --primary-hover: #2a1a5f;
+  --secondary-hover: #0ca1a6;
+  --accent-hover: #d45a75;
+  
+  /* Gradient Combinations */
+  --gradient-primary: linear-gradient(135deg, var(--deep-purple) 0%, var(--trapper-keeper-green) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--modern-pink-backpack) 0%, var(--pink-boot) 100%);
+  --gradient-hero: linear-gradient(135deg, var(--deep-purple) 0%, #0db4b9 50%, #e76d89 100%);
+}
