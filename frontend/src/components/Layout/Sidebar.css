@@ -179,3 +179,29 @@
     margin-left: 0 !important;
   }
 }
+
+/* Sidebar Footer and Logout Button */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.logout-sidebar-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.logout-sidebar-btn:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-1px);
+}

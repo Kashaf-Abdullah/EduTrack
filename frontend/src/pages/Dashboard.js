@@ -1,8 +1,10 @@
+
+
+
 import React from 'react';
 import useAuth from '../hooks/useAuth';
 import AdminDashboard from '../components/AdminDashboard/AdminDashboard';
 import TeacherDashboard from '../components/TeacherDashbaord/TeacherDashboard';
-// import TeacherDashboard from '../components/TeacherDashboard/TeacherDashboard';
 import StudentDashboard from '../components/StudentDashbaord/StudentDashboard';
 
 const Dashboard = () => {
