@@ -1,4 +1,12 @@
-.admin-dashboard {
+.student-dashboard-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.student-dashboard {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -110,10 +118,64 @@
   font-weight: 600;
 }
 
-/* Remove any default margins and padding */
-.admin-dashboard > * {
-  margin: 0;
+.quick-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  background: #0db4b9;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.action-btn:hover {
+  background: #0a9a9e;
+}
+
+.subject-list {
+  list-style: none;
   padding: 0;
+}
+
+.subject-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #555;
+}
+
+.subject-list li:last-child {
+  border-bottom: none;
+}
+
+.deadline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deadline-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.deadline-title {
+  font-weight: 500;
+  color: #333;
+}
+
+.deadline-date {
+  color: #e76d89;
+  font-size: 0.9rem;
 }
 
 /* Mobile First Responsive Design */
@@ -145,6 +207,16 @@
   .content-card {
     padding: 15px;
   }
+  
+  .quick-actions {
+    flex-direction: column;
+  }
+  
+  .deadline-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
 }
 
 @media (min-width: 769px) {
@@ -160,7 +232,7 @@
   .content-card {
     border-right: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;
-    min-height: 300px;
+    min-height: 250px;
   }
   
   .grid-column:last-child .content-card {

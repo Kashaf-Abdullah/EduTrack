@@ -2,6 +2,8 @@
   display: flex;
   min-height: 100vh;
   background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
 }
 
 .main-content {
@@ -10,12 +12,17 @@
   flex-direction: column;
   width: 100%;
   transition: margin-left 0.3s ease;
+  margin: 0;
+  padding: 0;
 }
 
 .content-area {
   flex: 1;
   overflow-y: auto;
   background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 /* Desktop: Sidebar fixed */
@@ -39,4 +46,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }

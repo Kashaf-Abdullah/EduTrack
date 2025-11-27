@@ -1,4 +1,12 @@
-.admin-dashboard {
+.teacher-dashboard-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.teacher-dashboard {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -110,10 +118,38 @@
   font-weight: 600;
 }
 
-/* Remove any default margins and padding */
-.admin-dashboard > * {
-  margin: 0;
+.quick-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  background: #0db4b9;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.action-btn:hover {
+  background: #0a9a9e;
+}
+
+.subject-list {
+  list-style: none;
   padding: 0;
+}
+
+.subject-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.subject-list li:last-child {
+  border-bottom: none;
 }
 
 /* Mobile First Responsive Design */
@@ -145,6 +181,10 @@
   .content-card {
     padding: 15px;
   }
+  
+  .quick-actions {
+    flex-direction: column;
+  }
 }
 
 @media (min-width: 769px) {
@@ -160,7 +200,7 @@
   .content-card {
     border-right: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;
-    min-height: 300px;
+    min-height: 250px;
   }
   
   .grid-column:last-child .content-card {

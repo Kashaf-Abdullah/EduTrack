@@ -138,7 +138,7 @@ const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <DashboardLayout user={user}>
+    <div>
       {/* No container div - direct content */}
       <div className="dashboard-header">
         <h1>Admin Dashboard</h1>
@@ -194,7 +194,7 @@ const AdminDashboard = () => {
           <Announcements />
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
 };
 
