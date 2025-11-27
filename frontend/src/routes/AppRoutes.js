@@ -1,3 +1,6 @@
+
+
+
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home';
@@ -10,7 +13,10 @@ const AppRoutes = () => (
     <Route path="/" element={<Home />} />
     <Route path="/login" element={<Login />} />
     <Route path="/register" element={<Register />} />
-    <Route path="/dashboard" element={<Dashboard />} />
+    
+    {/* Single dashboard route - all sub-routes iske andar handle honge */}
+    <Route path="/dashboard/*" element={<Dashboard />} />
+    
     <Route path="*" element={<Navigate to="/" />} />
   </Routes>
 );
