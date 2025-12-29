@@ -1,0 +1,374 @@
+/* Homepage.css */
+.homepage {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Hero Section */
+.hero-section {
+  background: var(--gradient-hero);
+  color: var(--text-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn-outline-primary {
+  color: var(--text-light);
+  border-color: var(--text-light);
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+  background: var(--text-light);
+  color: var(--primary);
+}
+
+.hero-graphic {
+  position: relative;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-card {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  color: white;
+  min-width: 120px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.floating-card i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.floating-card span {
+  font-weight: 600;
+}
+
+.admin-card {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.teacher-card {
+  top: 50%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.student-card {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 2s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Sections Common Styles */
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+/* Feature Cards */
+.feature-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  font-size: 2rem;
+}
+
+.feature-card h5 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.feature-card p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Role Cards */
+.role-card {
+  background: var(--bg-primary);
+  border-radius: 15px;
+  padding: 2rem;
+  height: 100%;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid transparent;
+}
+
+.admin-role {
+  border-top-color: var(--primary);
+}
+
+.teacher-role {
+  border-top-color: var(--secondary);
+}
+
+.student-role {
+  border-top-color: var(--accent-1);
+}
+
+.role-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.role-header i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.admin-role .role-header i {
+  color: var(--primary);
+}
+
+.teacher-role .role-header i {
+  color: var(--secondary);
+}
+
+.student-role .role-header i {
+  color: var(--accent-1);
+}
+
+.role-header h4 {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.role-features {
+  list-style: none;
+  padding: 0;
+}
+
+.role-features li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.role-features li:before {
+  content: '✓';
+  color: var(--secondary);
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.role-features li:last-child {
+  border-bottom: none;
+}
+
+/* Step Cards */
+.step-card {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.step-number {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 auto 1.5rem;
+}
+
+.step-card h5 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.step-card p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Tech Cards */
+.tech-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.tech-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-color: var(--border-accent);
+}
+
+.tech-card i {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.tech-card span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.tech-description {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* CTA Section */
+.cta-section {
+  background: var(--gradient-primary);
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.cta-section .btn-light {
+  background: white;
+  color: var(--primary);
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+}
+
+.cta-section .btn-light:hover {
+  background: var(--bg-secondary);
+  color: var(--primary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .hero-graphic {
+    height: 300px;
+    margin-top: 2rem;
+  }
+  
+  .floating-card {
+    min-width: 100px;
+    padding: 1rem;
+  }
+  
+  .floating-card i {
+    font-size: 1.5rem;
+  }
+  
+  .hero-buttons .btn {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-buttons .me-3 {
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .feature-card,
+  .role-card,
+  .step-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .cta-section h2 {
+    font-size: 2rem;
+  }
+}

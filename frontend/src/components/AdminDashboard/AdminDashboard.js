@@ -133,6 +133,7 @@ import ManageSubjects from './ManageSubjects';
 import Announcements from './Announcements';
 import StudentsList from './StudentsList';
 import './AdminDashboard.css';
+import PublicInfoAdmin from '../PublicInfo/PublicInfoAdmin';
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -192,6 +193,7 @@ const AdminDashboard = () => {
         <div className="grid-column">
           <ManageSubjects />
           <Announcements />
+           <PublicInfoAdmin/>
         </div>
       </div>
     </div>

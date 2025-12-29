@@ -22,6 +22,7 @@ import ViewAttendance from '../components/StudentDashbaord/ViewAttendance';
 import ViewResults from '../components/StudentDashbaord/ViewResults';
 import ClassRequest from '../components/StudentDashbaord/ClassRequest';
 import StudentAttendance from '../components/StudentDashbaord/StudentMarkAttendance';
+import PublicInfoAdmin from '../components/PublicInfo/PublicInfoAdmin';
 
 // Admin sub-components
 const AdminDashboardContent = () => {
@@ -39,12 +40,7 @@ const AdminDashboardContent = () => {
     case '/dashboard/admin/announcements':
       return <Announcements />;
     case '/dashboard/admin/public-info':
-      return (
-        <div className="dashboard-header">
-          <h1>Public Information</h1>
-          <p>Manage public information and settings</p>
-        </div>
-      );
+      return <PublicInfoAdmin />;
     default:
       return <AdminDashboard />;
   }
@@ -101,10 +97,47 @@ const Dashboard = () => {
 
   if (!user) {
     return (
-      <div className="login-prompt">
-        <p>Please log in to access dashboard.</p>
-        <button onClick={() => navigate('/login')}>Login</button>
+    //   <div className="login-prompt">
+    //     <p>Please log in to access dashboard.</p>
+    //     <button onClick={() => navigate('/login')}>Login</button>
+    //   </div>
+    <>
+      <div className="container mt-5">
+  <div className="row justify-content-center">
+    <div className="col-md-6 col-lg-4">
+      <div className="card shadow text-center">
+        <div className="card-body p-5">
+          <div className="mb-4">
+            <i className="fas fa-lock fa-3x text-primary mb-3"></i>
+            <h3 className="card-title">Access Required</h3>
+            <p className="text-muted">Please log in to access your dashboard</p>
+          </div>
+          <button 
+            className="btn btn-primary btn-lg w-100 mb-3"
+            onClick={() => navigate('/login')}
+          >
+            <i className="fas fa-sign-in-alt me-2"></i>
+            Login to Dashboard
+          </button>
+          <p className="text-muted small mb-0">
+            Don't have an account?{' '}
+            <a 
+              href="/register" 
+              className="text-decoration-none fw-semibold"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/register');
+              }}
+            >
+              Sign up here
+            </a>
+          </p>
+        </div>
       </div>
+    </div>
+  </div>
+</div>
+    </>
     );
   }
 
