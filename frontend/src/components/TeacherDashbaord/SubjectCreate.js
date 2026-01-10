@@ -70,7 +70,7 @@
 //       return;
 //     }
 //     try {
-//       const res = await axios.post('http://localhost:5000/api/subjects', form, {
+//       const res = await axios.post(`${API_BASE_URL}/subjects', form, {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 //       setSuccess(`Subject "${res.data.name}" created successfully!`);
@@ -151,6 +151,7 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const daysOptions = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -224,7 +225,7 @@ const SubjectCreate = () => {
     }
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:5000/api/subjects', form, {
+      const res = await axios.post(`${API_BASE_URL}/subjects', form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccess(`Subject "${res.data.name}" created successfully!`);

@@ -13,7 +13,7 @@
 //   // Fetch students and their subject enrollments
 //   const fetchStudentsDetails = async () => {
 //     try {
-//       const res = await axios.get('http://localhost:5000/api/subjects/admin/students', {
+//       const res = await axios.get(`${API_BASE_URL}/subjects/admin/students', {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 //       setStudents(res.data);
@@ -33,7 +33,7 @@
 //     if (!window.confirm("Remove student from this subject?")) return;
 //     try {
 //       await axios.post(
-//         'http://localhost:5000/api/admin/remove-student-from-subject',
+//         `${API_BASE_URL}/admin/remove-student-from-subject',
 //         { studentId, subjectId },
 //         { headers: { Authorization: `Bearer ${token}` } }
 //       );
@@ -60,7 +60,7 @@
 //     setDeleteLoading(studentId);
 //     try {
 //       await axios.delete(
-//         `http://localhost:5000/api/admin/student/${studentId}`,
+//         `${API_BASE_URL}/admin/student/${studentId}`,
 //         { headers: { Authorization: `Bearer ${token}` } }
 //       );
 //       setStudents(students => students.filter(student => student.id !== studentId));
@@ -144,6 +144,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 function StudentsList() {
   const [students, setStudents] = useState([]);
@@ -161,7 +162,7 @@ function StudentsList() {
   // Fetch students and their subject enrollments
   const fetchStudentsDetails = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/subjects/admin/students', {
+      const res = await axios.get(`${API_BASE_URL}/subjects/admin/students', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setStudents(res.data);
@@ -184,7 +185,7 @@ function StudentsList() {
     try {
       setRemoveLoading(`${studentId}-${subjectId}`);
       await axios.post(
-        'http://localhost:5000/api/admin/remove-student-from-subject',
+        `${API_BASE_URL}/admin/remove-student-from-subject',
         { studentId, subjectId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -216,7 +217,7 @@ function StudentsList() {
     setDeleteLoading(studentId);
     try {
       await axios.delete(
-        `http://localhost:5000/api/admin/student/${studentId}`,
+        `${API_BASE_URL}/admin/student/${studentId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setStudents(students => students.filter(student => student.id !== studentId));

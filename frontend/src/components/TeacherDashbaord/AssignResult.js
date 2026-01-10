@@ -196,6 +196,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const AssignResult = () => {
   const { user, token } = useContext(AuthContext);
@@ -218,7 +219,7 @@ const AssignResult = () => {
     const fetchSubjects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:5000/api/subjects', {
+        const res = await axios.get(`${API_BASE_URL}/subjects`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const filteredSubjects = res.data.filter(
@@ -245,7 +246,7 @@ const AssignResult = () => {
     const fetchStudents = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:5000/api/subjects/${selectedSubject}`, {
+        const res = await axios.get(`${API_BASE_URL}/subjects/${selectedSubject}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setStudents(res.data.students || []);
@@ -266,7 +267,7 @@ const AssignResult = () => {
     
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5000/api/results/teacher/${user.id}`, {
+      const res = await axios.get(`${API_BASE_URL}/results/teacher/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResults(res.data);
@@ -299,7 +300,7 @@ const AssignResult = () => {
     try {
       setSubmitting(true);
       await axios.post(
-        'http://localhost:5000/api/results',
+        `${API_BASE_URL}/results`,
         {
           subjectId: selectedSubject,
           studentId: selectedStudent,

@@ -15,7 +15,7 @@
 //     if (!token || !user) return;
 //     const fetchClasses = async () => {
 //       try {
-//         const response = await axios.get('http://localhost:5000/api/subjects', {
+//         const response = await axios.get(`${API_BASE_URL}/subjects', {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         const myClasses = response.data.filter(
@@ -37,7 +37,7 @@
 //     }
 //     const fetchAttendance = async () => {
 //       try {
-//         const url = new URL(`http://localhost:5000/api/attendance/teacher/${user.id}`);
+//         const url = new URL(`${API_BASE_URL}/attendance/teacher/${user.id}`);
 //         url.searchParams.set('classId', selectedClass);
 //         if (selectedDate) url.searchParams.set('date', selectedDate);
 
@@ -123,6 +123,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const AttendanceView = () => {
   const { user, token } = useContext(AuthContext);
@@ -141,7 +142,7 @@ const AttendanceView = () => {
     const fetchClasses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/subjects', {
+        const response = await axios.get(`${API_BASE_URL}/subjects', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const myClasses = response.data.filter(
@@ -167,7 +168,7 @@ const AttendanceView = () => {
     const fetchAttendance = async () => {
       try {
         setLoading(true);
-        const url = new URL(`http://localhost:5000/api/attendance/teacher/${user.id}`);
+        const url = new URL(`${API_BASE_URL}/attendance/teacher/${user.id}`);
         url.searchParams.set('classId', selectedClass);
         if (selectedDate) url.searchParams.set('date', selectedDate);
 
@@ -241,7 +242,7 @@ const AttendanceView = () => {
     if (!selectedClass) return;
     try {
       setLoading(true);
-      const url = new URL(`http://localhost:5000/api/attendance/teacher/${user.id}`);
+      const url = new URL(`${API_BASE_URL}/attendance/teacher/${user.id}`);
       url.searchParams.set('classId', selectedClass);
       if (selectedDate) url.searchParams.set('date', selectedDate);
 

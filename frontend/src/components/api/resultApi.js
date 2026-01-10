@@ -1,6 +1,7 @@
 import axios from 'axios';
+import API_BASE_URL from '../../config/api.js';
 
-const BASE_URL = 'http://localhost:5000/api/results';
+const BASE_URL = `${API_BASE_URL}/results`;
 
 export const getResultsByStudent = async (studentId, token) => {
   const res = await axios.get(`${BASE_URL}/student/${studentId}`, {

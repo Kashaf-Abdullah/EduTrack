@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const AdminApproveUsers = () => {
   const { token } = useContext(AuthContext);
@@ -13,7 +14,7 @@ const AdminApproveUsers = () => {
       try {
         setLoading(true);
         // Assuming backend route to get users pending approval
-        const res = await axios.get('http://localhost:5000/api/users/pending', {
+        const res = await axios.get(`${API_BASE_URL}/users/pending`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPendingUsers(res.data);
@@ -29,7 +30,7 @@ const AdminApproveUsers = () => {
   const handleApprove = async (userId) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/users/approve/${userId}`,
+        `${API_BASE_URL}/users/approve/${userId}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

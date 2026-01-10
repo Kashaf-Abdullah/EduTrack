@@ -14,7 +14,7 @@
 //   useEffect(() => {
 //     const fetchUsers = async () => {
 //       try {
-//         const res = await axios.get('http://localhost:5000/api/users/pending', {
+//         const res = await axios.get(`${API_BASE_URL}/users/pending', {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         setUsers(res.data);
@@ -30,7 +30,7 @@
 
 //   const handleApprove = async (userId) => {
 //     try {
-//       await axios.put(`http://localhost:5000/api/users/approve/${userId}`, {}, {
+//       await axios.put(`${API_BASE_URL}/users/approve/${userId}`, {}, {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 //       setUsers((prev) => prev.filter((user) => user._id !== userId));
@@ -41,7 +41,7 @@
 
 //   const handleReject = async (userId) => {
 //     try {
-//       await axios.delete(`http://localhost:5000/api/users/${userId}`, {
+//       await axios.delete(`${API_BASE_URL}/users/${userId}`, {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 //       setUsers((prev) => prev.filter((user) => user._id !== userId));
@@ -113,6 +113,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const ManageUsers = () => {
   const { token, user } = useContext(AuthContext);
@@ -128,7 +129,7 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/users/pending', {
+        const res = await axios.get(`${API_BASE_URL}/users/pending', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(res.data);
@@ -146,7 +147,7 @@ const ManageUsers = () => {
   const handleApprove = async (userId, userName) => {
     try {
       setActionLoading(userId);
-      await axios.put(`http://localhost:5000/api/users/approve/${userId}`, {}, {
+      await axios.put(`${API_BASE_URL}/users/approve/${userId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers((prev) => prev.filter((user) => user._id !== userId));
@@ -166,7 +167,7 @@ const ManageUsers = () => {
 
     try {
       setActionLoading(userId);
-      await axios.delete(`http://localhost:5000/api/users/${userId}`, {
+      await axios.delete(`${API_BASE_URL}/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers((prev) => prev.filter((user) => user._id !== userId));
@@ -192,7 +193,7 @@ const ManageUsers = () => {
   const refreshData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/users/pending', {
+      const res = await axios.get(`${API_BASE_URL}/users/pending', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);

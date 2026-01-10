@@ -1,6 +1,7 @@
 import axios from 'axios';
+import API_BASE_URL from '../../config/api.js';
 
-const BASE_URL = 'http://localhost:5000/api/announcements';
+const BASE_URL = `${API_BASE_URL}/announcements`;
 
 export const getAnnouncements = async () => {
   const res = await axios.get(BASE_URL);

@@ -14,7 +14,7 @@
 //   useEffect(() => {
 //     const fetchSubjects = async () => {
 //       try {
-//         const res = await axios.get('http://localhost:5000/api/subjects', {
+//         const res = await axios.get('${API_BASE_URL}/subjects', {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         // Support both populated and non-populated teacher fields
@@ -38,7 +38,7 @@
 //         return;
 //       }
 //       try {
-//         const res = await axios.get(`http://localhost:5000/api/attendance/subject/${selectedSubject}`, {
+//         const res = await axios.get(`${API_BASE_URL}/attendance/subject/${selectedSubject}`, {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //        // console.log("attendance"+res);
@@ -139,7 +139,7 @@ const Attendance = () => {
     const fetchSubjects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:5000/api/subjects', {
+        const res = await axios.get('${API_BASE_URL}/subjects', {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Support both populated and non-populated teacher fields
@@ -167,7 +167,7 @@ const Attendance = () => {
       }
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:5000/api/attendance/subject/${selectedSubject}`, {
+        const res = await axios.get(`${API_BASE_URL}/attendance/subject/${selectedSubject}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log("attendance", JSON.stringify(res.data, null, 2));
@@ -210,7 +210,7 @@ const Attendance = () => {
     if (!selectedSubject) return;
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5000/api/attendance/subject/${selectedSubject}`, {
+      const res = await axios.get(`${API_BASE_URL}/attendance/subject/${selectedSubject}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAttendanceRecords(res.data);

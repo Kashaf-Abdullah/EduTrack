@@ -18,7 +18,7 @@
 //     if (!token || !user) return;
 //     const fetchSubjects = async () => {
 //       try {
-//         const res = await axios.get('http://localhost:5000/api/subjects', {
+//         const res = await axios.get(`${API_BASE_URL}/subjects', {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         // Filter subjects to only those owned by current user if teacher
@@ -42,7 +42,7 @@
 //     }
 //     const fetchStudents = async () => {
 //       try {
-//         const res = await axios.get(`http://localhost:5000/api/subjects/${selectedSubject}`, {
+//         const res = await axios.get(`${API_BASE_URL}/subjects/${selectedSubject}`, {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         setStudents(res.data.students || []);
@@ -63,7 +63,7 @@
 //     const fetchResults = async () => {
 //       try {
 //         const res = await axios.get(
-//           `http://localhost:5000/api/results/${selectedStudent}?subjectId=${selectedSubject}`,
+//           `${API_BASE_URL}/results/${selectedStudent}?subjectId=${selectedSubject}`,
 //           { headers: { Authorization: `Bearer ${token}` } }
 //         );
 //         setResults(res.data);
@@ -148,6 +148,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const Results = () => {
   const { token, user } = useContext(AuthContext);
@@ -167,7 +168,7 @@ const Results = () => {
     const fetchSubjects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:5000/api/subjects', {
+        const res = await axios.get(`${API_BASE_URL}/subjects', {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Filter subjects to only those owned by current user if teacher
@@ -196,7 +197,7 @@ const Results = () => {
     const fetchStudents = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:5000/api/subjects/${selectedSubject}`, {
+        const res = await axios.get(`${API_BASE_URL}/subjects/${selectedSubject}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setStudents(res.data.students || []);
@@ -242,7 +243,7 @@ const Results = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:5000/api/results/${selectedStudent}?subjectId=${selectedSubject}`,
+          `${API_BASE_URL}/results/${selectedStudent}?subjectId=${selectedSubject}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setResults(res.data);
@@ -299,7 +300,7 @@ const Results = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:5000/api/results/${selectedStudent}?subjectId=${selectedSubject}`,
+        `${API_BASE_URL}/results/${selectedStudent}?subjectId=${selectedSubject}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setResults(res.data);

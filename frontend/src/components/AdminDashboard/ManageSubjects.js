@@ -12,7 +12,7 @@
 //   useEffect(() => {
 //     const fetchSubjects = async () => {
 //       try {
-//         const res = await axios.get('http://localhost:5000/api/subjects', {
+//         const res = await axios.get(`${API_BASE_URL}/subjects', {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         setSubjects(res.data);
@@ -49,6 +49,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const ManageSubjects = () => {
   const { token, user } = useContext(AuthContext);
@@ -65,7 +66,7 @@ const ManageSubjects = () => {
     const fetchSubjects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:5000/api/subjects', {
+        const res = await axios.get(`${API_BASE_URL}/subjects', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSubjects(res.data);
@@ -95,13 +96,13 @@ const ManageSubjects = () => {
     }
 
     try {
-      await axios.delete(`http://localhost:5000/api/subjects/${subjectId}`, {
+      await axios.delete(`${API_BASE_URL}/subjects/${subjectId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccess(`Subject "${subjectName}" deleted successfully!`);
       setError('');
       // Refresh the list
-      const res = await axios.get('http://localhost:5000/api/subjects', {
+      const res = await axios.get(`${API_BASE_URL}/subjects', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSubjects(res.data);
@@ -113,7 +114,7 @@ const ManageSubjects = () => {
   const refreshData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/subjects', {
+      const res = await axios.get(`${API_BASE_URL}/subjects', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSubjects(res.data);

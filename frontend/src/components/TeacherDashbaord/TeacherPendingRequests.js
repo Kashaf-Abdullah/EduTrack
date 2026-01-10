@@ -17,7 +17,7 @@
 //     if (!token || !user || !user.id) return;
 //     try {
 //       // FIX: Changed user._id to user.id
-//       const res = await axios.get(`http://localhost:5000/api/class-requests/teacher/${user.id}`, {
+//       const res = await axios.get(`${API_BASE_URL}/class-requests/teacher/${user.id}`, {
 //         headers: { Authorization: `Bearer ${token}` }
 //       });
       
@@ -40,7 +40,7 @@
 
 //   const approveRequest = async (requestId) => {
 //     try {
-//       await axios.post(`http://localhost:5000/api/class-requests/${requestId}/approve`, {}, {
+//       await axios.post(`${API_BASE_URL}/class-requests/${requestId}/approve`, {}, {
 //         headers: { Authorization: `Bearer ${token}` }
 //       });
 //       setMessage("Request approved and student assigned.");
@@ -53,7 +53,7 @@
 
 //   const rejectRequest = async (requestId) => {
 //     try {
-//       await axios.post(`http://localhost:5000/api/class-requests/${requestId}/reject`, {}, {
+//       await axios.post(`${API_BASE_URL}/class-requests/${requestId}/reject`, {}, {
 //         headers: { Authorization: `Bearer ${token}` }
 //       });
 //       setMessage("Request rejected.");
@@ -117,6 +117,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const TeacherPendingRequests = () => {
   const { token, user } = useContext(AuthContext);
@@ -131,7 +132,7 @@ const TeacherPendingRequests = () => {
     if (!token || !user || !user.id) return;
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5000/api/class-requests/teacher/${user.id}`, {
+      const res = await axios.get(`${API_BASE_URL}/class-requests/teacher/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -155,7 +156,7 @@ const TeacherPendingRequests = () => {
   const approveRequest = async (requestId, studentName, className) => {
     try {
       setActionLoading(requestId);
-      await axios.post(`http://localhost:5000/api/class-requests/${requestId}/approve`, {}, {
+      await axios.post(`${API_BASE_URL}/class-requests/${requestId}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess(`Request from ${studentName} for ${className} approved successfully!`);
@@ -172,7 +173,7 @@ const TeacherPendingRequests = () => {
   const rejectRequest = async (requestId, studentName, className) => {
     try {
       setActionLoading(requestId);
-      await axios.post(`http://localhost:5000/api/class-requests/${requestId}/reject`, {}, {
+      await axios.post(`${API_BASE_URL}/class-requests/${requestId}/reject`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess(`Request from ${studentName} for ${className} rejected.`);

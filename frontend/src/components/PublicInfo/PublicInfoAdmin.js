@@ -11,7 +11,7 @@
 //   useEffect(() => {
 //     const fetchPublicInfo = async () => {
 //       try {
-//         const res = await axios.get('http://localhost:5000/api/public-info', {
+//         const res = await axios.get(`${API_BASE_URL}/public-info`, {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         setPublicInfos(res.data);
@@ -50,7 +50,7 @@
 //   const toggleVisibility = async (id, currentVisibility) => {
 //     try {
 //       await axios.put(
-//         `http://localhost:5000/api/public-info/${id}`,
+//         `${API_BASE_URL}/public-info/${id}`,
 //         { visible: !currentVisibility },
 //         { headers: { Authorization: `Bearer ${token}` } }
 //       );
@@ -115,6 +115,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const PublicInfoAdmin = () => {
   const { token, user } = useContext(AuthContext);
@@ -153,7 +154,7 @@ const PublicInfoAdmin = () => {
     const fetchPublicInfo = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:5000/api/public-info', {
+        const res = await axios.get(`${API_BASE_URL}/public-info`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Ensure all info objects have required fields
@@ -196,7 +197,7 @@ const PublicInfoAdmin = () => {
 
     try {
       setLoading(true);
-      await axios.post('http://localhost:5000/api/public-info', form, {
+      await axios.post(`${API_BASE_URL}/public-info`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setForm({ 
@@ -210,7 +211,7 @@ const PublicInfoAdmin = () => {
       setError('');
       
       // Refresh list
-      const res = await axios.get('http://localhost:5000/api/public-info', {
+      const res = await axios.get(`${API_BASE_URL}/public-info`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const processedData = Array.isArray(res.data) ? res.data.map(info => ({
@@ -235,7 +236,7 @@ const PublicInfoAdmin = () => {
     try {
       setActionLoading(id);
       await axios.put(
-        `http://localhost:5000/api/public-info/${id}`,
+        `${API_BASE_URL}/public-info/${id}`,
         { visible: !currentVisibility },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -260,7 +261,7 @@ const PublicInfoAdmin = () => {
 
     try {
       setActionLoading(id);
-      await axios.delete(`http://localhost:5000/api/public-info/${id}`, {
+      await axios.delete(`${API_BASE_URL}/public-info/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPublicInfos((prev) => prev.filter((info) => info._id !== id));
@@ -286,7 +287,7 @@ const PublicInfoAdmin = () => {
   const refreshData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/public-info', {
+      const res = await axios.get(`${API_BASE_URL}/public-info`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const processedData = Array.isArray(res.data) ? res.data.map(info => ({

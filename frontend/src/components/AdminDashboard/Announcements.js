@@ -23,7 +23,7 @@
 
 //     const fetchUsers = async () => {
 //       try {
-//         const res = await axios.get('http://localhost:5000/api/users/approved', {
+//         const res = await axios.get(`${API_BASE_URL}/users/approved', {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 //         setUsers(res.data);
@@ -127,6 +127,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { getAnnouncements, createAnnouncement } from '../api/announcementApi';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const Announcements = () => {
   const { token, user } = useContext(AuthContext);
@@ -155,7 +156,7 @@ const Announcements = () => {
         setLoading(true);
         const [announcementsData, usersData] = await Promise.all([
           getAnnouncements(),
-          axios.get('http://localhost:5000/api/users/approved', {
+          axios.get(`${API_BASE_URL}/users/approved', {
             headers: { Authorization: `Bearer ${token}` },
           })
         ]);

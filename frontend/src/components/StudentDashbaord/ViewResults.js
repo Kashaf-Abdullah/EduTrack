@@ -60,6 +60,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const ViewResults = () => {
   const { token, user } = useContext(AuthContext);
@@ -74,7 +75,7 @@ const ViewResults = () => {
     const fetchResults = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/results/${user.id}`, {
+        const response = await axios.get(`${API_BASE_URL}/results/${user.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setResults(response.data);
@@ -147,7 +148,7 @@ const ViewResults = () => {
     if (!token || !user) return;
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/results/${user.id}`, {
+      const response = await axios.get(`${API_BASE_URL}/results/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResults(response.data);

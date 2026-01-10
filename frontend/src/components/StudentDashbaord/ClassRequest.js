@@ -106,6 +106,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const ClassRequest = () => {
   const { user, token } = useContext(AuthContext);
@@ -123,12 +124,12 @@ const ClassRequest = () => {
       try {
         setLoading(true);
         // Fetch all subjects (all classes)
-        const subjectsRes = await axios.get('http://localhost:5000/api/subjects', {
+        const subjectsRes = await axios.get(`${API_BASE_URL}/subjects`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         // Fetch student's class requests (pending/rejected)
-        const requestsRes = await axios.get(`http://localhost:5000/api/class-requests/student/${user.id}`, {
+        const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${user.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -158,7 +159,7 @@ const ClassRequest = () => {
   const handleRequestClass = async (classId, className) => {
     try {
       setRequesting(true);
-      await axios.post('http://localhost:5000/api/class-requests', 
+      await axios.post(`${API_BASE_URL}/class-requests`, 
         { studentId: user.id, classId }, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -167,7 +168,7 @@ const ClassRequest = () => {
       setAvailableClasses(prev => prev.filter(c => c._id !== classId));
       
       // Refresh pending requests
-      const requestsRes = await axios.get(`http://localhost:5000/api/class-requests/student/${user.id}`, {
+      const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPendingRequests(requestsRes.data);
@@ -203,11 +204,11 @@ const ClassRequest = () => {
     if (!token || !user) return;
     try {
       setLoading(true);
-      const subjectsRes = await axios.get('http://localhost:5000/api/subjects', {
+      const subjectsRes = await axios.get(`${API_BASE_URL}/subjects`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const requestsRes = await axios.get(`http://localhost:5000/api/class-requests/student/${user.id}`, {
+      const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

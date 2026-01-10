@@ -65,6 +65,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const ViewAttendance = () => {
   const { token, user } = useContext(AuthContext);
@@ -79,7 +80,7 @@ const ViewAttendance = () => {
     const fetchAttendance = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/attendance/student/${user.id}`, {
+        const response = await axios.get(`${API_BASE_URL}/attendance/student/${user.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAttendanceRecords(response.data);
@@ -124,7 +125,7 @@ const ViewAttendance = () => {
     if (!token || !user) return;
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/attendance/student/${user.id}`, {
+      const response = await axios.get(`${API_BASE_URL}/attendance/student/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAttendanceRecords(response.data);

@@ -350,6 +350,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const StudentAttendance = () => {
   const { user, token } = useContext(AuthContext);
@@ -366,7 +367,7 @@ const StudentAttendance = () => {
     const fetchEnrolledClasses = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:5000/api/subjects/student/enrolled', {
+        const res = await axios.get(`${API_BASE_URL}/subjects/student/enrolled`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setEnrolledClasses(res.data);
@@ -386,7 +387,7 @@ const StudentAttendance = () => {
     try {
       setRefreshing(true);
       const response = await axios.get(
-        `http://localhost:5000/api/attendance/student/${user._id || user.id}`,
+        `${API_BASE_URL}/attendance/student/${user._id || user.id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAttendanceRecords(response.data);
@@ -465,7 +466,7 @@ const StudentAttendance = () => {
         ],
       };
       const response = await axios.post(
-        'http://localhost:5000/api/attendance',
+        `${API_BASE_URL}/attendance`,
         attendancePayload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
