@@ -465,11 +465,7 @@ const StudentAttendance = () => {
           },
         ],
       };
-      const response = await axios.post(
-        `${API_BASE_URL}/attendance`,
-        attendancePayload,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await axios.post(`${API_BASE_URL}/attendance`, attendancePayload, { headers: { Authorization: `Bearer ${token}` } });
       setSuccess(signIn ? 'Signed in successfully! ✅' : 'Signed out successfully! ✅');
       setError('');
       setTimeout(() => {

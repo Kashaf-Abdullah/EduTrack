@@ -122,6 +122,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import API_BASE_URL from '../../config/api.js';
 
 const Attendance = () => {
   const { token, user } = useContext(AuthContext);
@@ -139,7 +140,7 @@ const Attendance = () => {
     const fetchSubjects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('${API_BASE_URL}/subjects', {
+        const res = await axios.get(`${API_BASE_URL}/subjects`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Support both populated and non-populated teacher fields

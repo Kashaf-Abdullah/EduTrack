@@ -168,7 +168,7 @@ const Results = () => {
     const fetchSubjects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_BASE_URL}/subjects', {
+        const res = await axios.get(`${API_BASE_URL}/subjects`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Filter subjects to only those owned by current user if teacher

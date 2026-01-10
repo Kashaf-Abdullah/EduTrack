@@ -66,7 +66,7 @@ const ManageSubjects = () => {
     const fetchSubjects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_BASE_URL}/subjects', {
+        const res = await axios.get(`${API_BASE_URL}/subjects`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSubjects(res.data);
@@ -102,7 +102,7 @@ const ManageSubjects = () => {
       setSuccess(`Subject "${subjectName}" deleted successfully!`);
       setError('');
       // Refresh the list
-      const res = await axios.get(`${API_BASE_URL}/subjects', {
+      const res = await axios.get(`${API_BASE_URL}/subjects`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSubjects(res.data);
@@ -114,7 +114,7 @@ const ManageSubjects = () => {
   const refreshData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE_URL}/subjects', {
+      const res = await axios.get(`${API_BASE_URL}/subjects`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSubjects(res.data);

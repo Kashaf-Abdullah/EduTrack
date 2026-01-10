@@ -225,7 +225,7 @@ const SubjectCreate = () => {
     }
     try {
       setLoading(true);
-      const res = await axios.post(`${API_BASE_URL}/subjects', form, {
+      const res = await axios.post(`${API_BASE_URL}/subjects`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccess(`Subject "${res.data.name}" created successfully!`);

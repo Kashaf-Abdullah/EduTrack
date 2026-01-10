@@ -142,7 +142,7 @@ const AttendanceView = () => {
     const fetchClasses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/subjects', {
+        const response = await axios.get(`${API_BASE_URL}/subjects`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const myClasses = response.data.filter(

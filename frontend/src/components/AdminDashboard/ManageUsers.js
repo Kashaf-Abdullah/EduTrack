@@ -129,7 +129,7 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/users/pending', {
+        const res = await axios.get(`${API_BASE_URL}/users/pending`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(res.data);
@@ -193,7 +193,7 @@ const ManageUsers = () => {
   const refreshData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE_URL}/users/pending', {
+      const res = await axios.get(`${API_BASE_URL}/users/pending`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);

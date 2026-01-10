@@ -156,7 +156,7 @@ const Announcements = () => {
         setLoading(true);
         const [announcementsData, usersData] = await Promise.all([
           getAnnouncements(),
-          axios.get(`${API_BASE_URL}/users/approved', {
+          axios.get(`${API_BASE_URL}/users/approved`, {
             headers: { Authorization: `Bearer ${token}` },
           })
         ]);
