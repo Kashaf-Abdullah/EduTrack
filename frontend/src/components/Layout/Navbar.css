@@ -46,6 +46,7 @@
 .navbar-right {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
 .user-menu {
@@ -164,6 +165,6 @@
   }
   
   .menu-btn {
-    display: none; /* Hide menu button on desktop */
+    display: flex;
   }
 }

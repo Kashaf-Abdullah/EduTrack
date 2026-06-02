@@ -1,5 +1,10 @@
 import Attendance from '../models/attendanceModel.js';
 import Subject from '../models/subjectModel.js';
+import User from '../models/userModel.js';
+import {
+  notifyAttendanceMarked,
+  notifyAdminAttendanceMarked
+} from './notificationController.js';
 
 //STUDNET mark attenadace
 // export const markAttendance = async (req, res) => {
@@ -131,6 +136,20 @@ export const markAttendance = async (req, res) => {
     const updatedAttendance = await Attendance.findById(attendance._id)
       .populate('subject', 'name classCode')
       .populate('attendanceRecords.student', 'name email');
+
+    // Get subject and teacher info for notifications
+    const subject = await Subject.findById(subjectId).populate('teacher', 'name');
+    
+    // Notify all students in the class about attendance marking
+    if (subject) {
+      await notifyAttendanceMarked(subjectId, subject.name, subject.teacher?.name || 'Teacher');
+      
+      // Notify all admins
+      const admins = await User.find({ role: 'admin' });
+      for (const admin of admins) {
+        await notifyAdminAttendanceMarked(admin._id, subject.name, subject.teacher?.name || 'Teacher');
+      }
+    }
 
     res.status(201).json({
       message: 'Attendance successfully marked',

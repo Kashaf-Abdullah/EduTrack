@@ -139,8 +139,7 @@ const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div>
-      {/* No container div - direct content */}
+    <div className="admin-dashboard">
       <div className="dashboard-header">
         <h1>Admin Dashboard</h1>
         <p>Welcome back, {user?.name}! Here's what's happening today.</p>
@@ -187,14 +186,16 @@ const AdminDashboard = () => {
 
       <div className="dashboard-grid">
         <div className="grid-column">
-          <ManageUsers />
-          <StudentsList />
+          <div className="content-card">
+            <ManageUsers />
+          </div>
+          <div className="content-card">
+            <StudentsList />
+          </div>
         </div>
         <div className="grid-column">
-          <ManageSubjects />
-          <Announcements />
-           <PublicInfoAdmin/>
-        </div>
+          
+                </div>
       </div>
     </div>
   );

@@ -16,11 +16,11 @@ const StudentDashboard = () => {
         // e.g., navigate('/login') if you use react-router
       }
   return (
-    <div>
-<h1>student Dashboard</h1>
-      <button onClick={handleLogout} style={{ cursor: 'pointer', padding: '8px 16px' }}>
+    <div style={{ padding: '20px' }}>
+<h1>Student Dashboard</h1>
+      {/* <button onClick={handleLogout} style={{ cursor: 'pointer', padding: '8px 16px' }}>
       Logout
-      </button>
+      </button> */}
       <Announcement/>
 <PublicInfo/>
       <ViewAttendance/>

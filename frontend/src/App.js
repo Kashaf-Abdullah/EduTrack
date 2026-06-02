@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { NotificationProvider } from './contexts/NotificationContext';
 import AppRoutes from './routes/AppRoutes';
 import './styles/colors.css';
 import './styles/utilities.css';
@@ -9,9 +10,11 @@ import './styles/utilities.css';
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
+      <NotificationProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

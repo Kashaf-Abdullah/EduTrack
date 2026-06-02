@@ -1,5 +1,10 @@
 import Result from '../models/resultModel.js';
 import Subject from '../models/subjectModel.js';
+import User from '../models/userModel.js';
+import {
+  notifyResultUploaded,
+  notifyAdminResultUploaded
+} from './notificationController.js';
 
 // Add or update result for a student in a subject
 export const addOrUpdateResult = async (req, res) => {
@@ -29,6 +34,18 @@ export const addOrUpdateResult = async (req, res) => {
         teacher: teacherId,
       });
       await result.save();
+    }
+
+    // Get teacher name for notification
+    const teacher = await User.findById(teacherId);
+    
+    // Notify student about result upload
+    await notifyResultUploaded(studentId, subject.name);
+
+    // Notify all admins about result upload
+    const admins = await User.find({ role: 'admin' });
+    for (const admin of admins) {
+      await notifyAdminResultUploaded(admin._id, subject.name, teacher.name);
     }
 
     res.json(result);

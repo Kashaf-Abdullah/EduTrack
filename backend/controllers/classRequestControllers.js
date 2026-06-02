@@ -1,5 +1,10 @@
 import ClassRequest from '../models/classRequest.js';
 import Subject from '../models/subjectModel.js';
+import {
+  notifyClassRequest,
+  notifyClassRequestUpdate,
+  notifyClassRequestSubmitted
+} from './notificationController.js';
 
 // Student submits a join request
 export const submitClassRequest = async (req, res) => {
@@ -13,6 +18,17 @@ export const submitClassRequest = async (req, res) => {
 
     const request = new ClassRequest({ student: studentId, class: classId });
     await request.save();
+
+    // Populate student and class for notification
+    await request.populate('student', 'name email');
+    await request.populate('class', 'name');
+
+    // Send notification to student (confirmation)
+    await notifyClassRequestSubmitted(studentId, request.class.name);
+
+    // Send notification to teacher
+    await notifyClassRequest(studentId, classId, request.student.name, request.class.name);
+
     res.status(201).json(request);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -54,18 +70,24 @@ export const approveClassRequest = async (req, res) => {
   try {
     const requestId = req.params.requestId;
 
-    const request = await ClassRequest.findById(requestId);
+    const request = await ClassRequest.findById(requestId)
+      .populate('student', 'name email')
+      .populate('class', 'name');
+    
     if (!request) return res.status(404).json({ message: 'Request not found' });
 
     // Add student to subject's students array if not already
-    const subject = await Subject.findById(request.class);
-    if (!subject.students.includes(request.student)) {
-      subject.students.push(request.student);
+    const subject = await Subject.findById(request.class._id);
+    if (!subject.students.includes(request.student._id)) {
+      subject.students.push(request.student._id);
       await subject.save();
     }
 
     request.status = 'approved';
     await request.save();
+
+    // Send notification to student
+    await notifyClassRequestUpdate(request.student._id, 'approved', request.class.name);
 
     res.json({ message: 'Request approved and student assigned to class' });
   } catch (error) {
@@ -77,11 +99,17 @@ export const approveClassRequest = async (req, res) => {
 export const rejectClassRequest = async (req, res) => {
   try {
     const requestId = req.params.requestId;
-    const request = await ClassRequest.findById(requestId);
+    const request = await ClassRequest.findById(requestId)
+      .populate('student', 'name email')
+      .populate('class', 'name');
+      
     if (!request) return res.status(404).json({ message: 'Request not found' });
 
     request.status = 'rejected';
     await request.save();
+
+    // Send notification to student
+    await notifyClassRequestUpdate(request.student._id, 'rejected', request.class.name);
 
     res.json({ message: 'Request rejected' });
   } catch (error) {

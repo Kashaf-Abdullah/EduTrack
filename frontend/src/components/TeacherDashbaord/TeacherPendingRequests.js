@@ -121,6 +121,7 @@ import API_BASE_URL from '../../config/api.js';
 
 const TeacherPendingRequests = () => {
   const { token, user } = useContext(AuthContext);
+  const teacherId = user?._id || user?.id;
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -129,10 +130,10 @@ const TeacherPendingRequests = () => {
   const [filter, setFilter] = useState('all'); // all, pending, rejected
 
   const fetchRequests = async () => {
-    if (!token || !user || !user.id) return;
+    if (!token || !teacherId) return;
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE_URL}/class-requests/teacher/${user.id}`, {
+      const res = await axios.get(`${API_BASE_URL}/class-requests/teacher/${teacherId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -150,8 +151,8 @@ const TeacherPendingRequests = () => {
   };
 
   useEffect(() => {
-    if (token && user && user.id) fetchRequests();
-  }, [token, user]);
+    if (token && teacherId) fetchRequests();
+  }, [token, teacherId]);
 
   const approveRequest = async (requestId, studentName, className) => {
     try {

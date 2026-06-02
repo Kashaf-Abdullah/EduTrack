@@ -1,0 +1,34 @@
+/* Manage Pending Subjects Styles */
+
+.manage-pending-subjects {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.manage-pending-subjects h1,
+.manage-pending-subjects h3,
+.manage-pending-subjects h4 {
+  color: var(--text-primary, #333);
+}
+
+.manage-pending-subjects p {
+  color: var(--text-secondary, #666);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .manage-pending-subjects {
+    padding: 1rem !important;
+  }
+
+  .manage-pending-subjects h1 {
+    font-size: 1.5rem !important;
+  }
+
+  .manage-pending-subjects div[style*="display: flex"] {
+    flex-direction: column;
+  }
+
+  .manage-pending-subjects button {
+    width: 100% !important;
+  }
+}

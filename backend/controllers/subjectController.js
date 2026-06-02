@@ -1,8 +1,11 @@
 import Subject from '../models/subjectModel.js';
 import User from '../models/userModel.js';
 import { v4 as uuidv4 } from 'uuid';
-    const uniqueClassCode = uuidv4(); 
-// Create a new subject (teacher or admin)
+import { notifyClassCreated, createNotification } from './notificationController.js';
+
+const uniqueClassCode = uuidv4(); 
+
+// Create a new subject (teacher creates - needs admin approval)
 export const createSubject = async (req, res) => {
   try {
     const { name, description, classTimings, courseContent } = req.body;
@@ -15,33 +18,62 @@ export const createSubject = async (req, res) => {
       classTimings,
       courseContent,
       students: [],
-        classCode: uniqueClassCode 
+      classCode: uuidv4(),
+      status: 'pending',
+      approved: false
     });
 
     await subject.save();
-    res.status(201).json(subject);
+
+    // Get teacher name and all admins for notification
+    const teacherDoc = await User.findById(teacher);
+    const admins = await User.find({ role: 'admin' });
+
+    // Notify all admins about new class creation pending approval
+    for (const admin of admins) {
+      await notifyClassCreated(admin._id, name, teacherDoc.name);
+    }
+
+    res.status(201).json({ 
+      message: 'Subject created! Pending admin approval.',
+      subject 
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get all subjects (admin or teacher's own subjects)
+// Get all subjects (admin or teacher's own subjects, students only see approved)
 export const getSubjects = async (req, res) => {
   try {
+    // Check if user is authenticated
+    if (!req.user || !req.user.role) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
     let subjects;
     if (req.user.role === 'admin') {
-      subjects = await Subject.find().populate('teacher', 'name email');
+      // Admin sees all subjects (approved and pending)
+      subjects = await Subject.find()
+        .populate('teacher', 'name email')
+        .populate('approvedBy', 'name email');
     } else if (req.user.role === 'teacher') {
-      subjects = await Subject.find({ teacher: req.user._id }).populate('students', 'name email');
-    }
-    else if (req.user.role === 'student') {
-  subjects = await Subject.find({ students: { $ne: req.user._id } }).populate('teacher', 'name email');
-}
-    else {
+      // Teacher sees only their own subjects (including pending)
+      subjects = await Subject.find({ teacher: req.user._id })
+        .populate('students', 'name email');
+    } else if (req.user.role === 'student') {
+      // Student only sees APPROVED subjects (and not the ones they're already in)
+      subjects = await Subject.find({ 
+        approved: true,
+        status: 'approved',
+        students: { $ne: req.user._id } 
+      }).populate('teacher', 'name email');
+    } else {
       return res.status(403).json({ message: 'Access denied' });
     }
     res.json(subjects);
   } catch (error) {
+    console.error('Error in getSubjects:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -230,6 +262,105 @@ export const deleteStudent = async (req, res) => {
     // Remove from users
     await User.findByIdAndDelete(studentId);
     res.json({ message: 'Student deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get pending subjects (admin only)
+export const getPendingSubjects = async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Only admins can view pending subjects' });
+    }
+
+    const pendingSubjects = await Subject.find({ status: 'pending' })
+      .populate('teacher', 'name email')
+      .sort({ createdAt: -1 });
+
+    res.json(pendingSubjects);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Admin approves a subject
+export const approveSubject = async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Only admins can approve subjects' });
+    }
+
+    const { subjectId } = req.params;
+    const subject = await Subject.findByIdAndUpdate(
+      subjectId,
+      {
+        status: 'approved',
+        approved: true,
+        approvedBy: req.user._id
+      },
+      { new: true }
+    ).populate('teacher', 'name email');
+
+    if (!subject) {
+      return res.status(404).json({ message: 'Subject not found' });
+    }
+
+    // Notify teacher about approval
+    await createNotification({
+      recipient: subject.teacher._id,
+      type: 'class_created',
+      title: `Class Approved! ✅`,
+      message: `Your class "${subject.name}" has been approved and is now visible to students`,
+      actionUrl: `/dashboard/teacher/subject-create`
+    });
+
+    res.json({ 
+      message: 'Subject approved successfully',
+      subject 
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Admin rejects a subject
+export const rejectSubject = async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Only admins can reject subjects' });
+    }
+
+    const { subjectId } = req.params;
+    const { rejectionReason } = req.body;
+
+    const subject = await Subject.findByIdAndUpdate(
+      subjectId,
+      {
+        status: 'rejected',
+        approved: false,
+        rejectionReason: rejectionReason || 'Rejected by admin'
+      },
+      { new: true }
+    ).populate('teacher', 'name email');
+
+    if (!subject) {
+      return res.status(404).json({ message: 'Subject not found' });
+    }
+
+    // Notify teacher about rejection
+    await createNotification({
+      recipient: subject.teacher._id,
+      type: 'class_created',
+      title: `Class Rejected ❌`,
+      message: `Your class "${subject.name}" was rejected. Reason: ${rejectionReason || 'No reason provided'}`,
+      actionUrl: `/dashboard/teacher/subject-create`
+    });
+
+    res.json({ 
+      message: 'Subject rejected',
+      subject 
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

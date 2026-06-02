@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import NotificationDropdown from '../Notifications/NotificationDropdown';
 import './Navbar.css';
 
 const Navbar = ({ onMenuClick, user }) => {
@@ -19,6 +20,9 @@ const Navbar = ({ onMenuClick, user }) => {
       </div>
       
       <div className="navbar-right">
+        {/* Notification Bell */}
+        <NotificationDropdown />
+
         <div className="user-menu">
           <span className="welcome-text">Welcome, {user?.name}</span>
           <div className="dropdown">

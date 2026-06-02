@@ -24,6 +24,7 @@ const Sidebar = ({ isOpen, onClose, user }) => {
     if (user?.role === 'admin') {
       return [
         ...baseItems,
+        { label: 'Pending Subjects', icon: '⏳', path: '/dashboard/admin/pending-subjects' },
         { label: 'Manage Users', icon: '👥', path: '/dashboard/admin/users' },
         { label: 'Manage Subjects', icon: '📚', path: '/dashboard/admin/subjects' },
         { label: 'Students', icon: '🎓', path: '/dashboard/admin/students' },
@@ -72,10 +73,6 @@ const Sidebar = ({ isOpen, onClose, user }) => {
 
   return (
     <>
-      {isOpen && (
-        <div className="sidebar-overlay" onClick={onClose}></div>
-      )}
-      
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <h2 className="sidebar-logo">
@@ -110,7 +107,6 @@ const Sidebar = ({ isOpen, onClose, user }) => {
             ))}
           </ul>
           
-          
           <div className="sidebar-footer">
             <button 
               className="logout-sidebar-btn" 
@@ -122,6 +118,9 @@ const Sidebar = ({ isOpen, onClose, user }) => {
           </div>
         </nav>
       </aside>
+      {isOpen && (
+        <div className="sidebar-overlay" onClick={onClose}></div>
+      )}
     </>
   );
 };

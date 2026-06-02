@@ -148,7 +148,7 @@
 
 // export default SubjectCreate;
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
@@ -168,7 +168,7 @@ const timeSlots = [
 ];
 
 const SubjectCreate = () => {
-  const { token } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     name: '',
@@ -182,6 +182,10 @@ const SubjectCreate = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [teacherSubjects, setTeacherSubjects] = useState([]);
+  const [teacherRequests, setTeacherRequests] = useState([]);
+  const [teacherLoading, setTeacherLoading] = useState(false);
+  const teacherId = user?._id || user?.id;
 
   const handleTimingAdd = () => {
     if (!day || !timeSlot) {
@@ -213,6 +217,31 @@ const SubjectCreate = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const fetchTeacherData = async () => {
+    if (!token || !teacherId) return;
+    try {
+      setTeacherLoading(true);
+      const [subjectsRes, requestsRes] = await Promise.all([
+        axios.get(`${API_BASE_URL}/subjects`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        axios.get(`${API_BASE_URL}/class-requests/teacher/${teacherId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
+      setTeacherSubjects(subjectsRes.data);
+      setTeacherRequests(Array.isArray(requestsRes.data) ? requestsRes.data : []);
+    } catch (err) {
+      console.error('Failed to load teacher data:', err);
+    } finally {
+      setTeacherLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeacherData();
+  }, [token, teacherId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim()) {
@@ -231,6 +260,7 @@ const SubjectCreate = () => {
       setSuccess(`Subject "${res.data.name}" created successfully!`);
       setForm({ name: '', description: '', classTimings: [], courseContent: '' });
       setError('');
+      await fetchTeacherData();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create subject');
     } finally {
@@ -500,6 +530,16 @@ const SubjectCreate = () => {
     infoGroup: {
       marginBottom: '1.5rem'
     },
+    statusBadge: {
+      display: 'inline-block',
+      marginLeft: '0.75rem',
+      padding: '0.25rem 0.5rem',
+      borderRadius: '999px',
+      backgroundColor: 'var(--secondary)',
+      color: 'white',
+      fontSize: '0.8rem',
+      textTransform: 'capitalize'
+    },
     infoGroupTitle: {
       margin: '0 0 0.75rem 0',
       color: 'var(--text-primary)',
@@ -592,9 +632,7 @@ const SubjectCreate = () => {
                   onChange={handleChange}
                   placeholder="Enter subject name"
                   required
-                  style={styles.formInput}
-                  onFocus={(e) => e.target.style = {...styles.formInput, ...styles.formInputFocus}}
-                  onBlur={(e) => e.target.style = styles.formInput}
+                  className="form-control"
                 />
               </div>
 
@@ -609,9 +647,7 @@ const SubjectCreate = () => {
                   onChange={handleChange}
                   rows="3"
                   placeholder="Brief description of the subject..."
-                  style={styles.formTextarea}
-                  onFocus={(e) => e.target.style = {...styles.formTextarea, ...styles.formInputFocus}}
-                  onBlur={(e) => e.target.style = styles.formTextarea}
+                  className="form-control"
                 />
               </div>
 
@@ -624,6 +660,7 @@ const SubjectCreate = () => {
                   <select 
                     value={day} 
                     onChange={(e) => setDay(e.target.value)}
+                    className="form-control"
                     style={styles.formSelect}
                   >
                     <option value="">Select Day</option>
@@ -635,6 +672,7 @@ const SubjectCreate = () => {
                   <select 
                     value={timeSlot} 
                     onChange={(e) => setTimeSlot(e.target.value)}
+                    className="form-control"
                     style={styles.formSelect}
                   >
                     <option value="">Select Time Slot</option>
@@ -699,9 +737,7 @@ const SubjectCreate = () => {
                   onChange={handleChange}
                   rows="4"
                   placeholder="Detailed course content, topics covered, learning objectives..."
-                  style={styles.formTextarea}
-                  onFocus={(e) => e.target.style = {...styles.formTextarea, ...styles.formInputFocus}}
-                  onBlur={(e) => e.target.style = styles.formTextarea}
+                  className="form-control"
                 />
               </div>
 
@@ -765,6 +801,73 @@ const SubjectCreate = () => {
                   <li>Consider student availability</li>
                 </ul>
               </div>
+
+              {teacherLoading ? (
+                <div style={styles.infoGroup}>
+                  <h4 style={styles.infoGroupTitle}>Loading your teacher data...</h4>
+                </div>
+              ) : (
+                <>
+                  {teacherSubjects.length > 0 && (
+                    <div style={styles.infoGroup}>
+                      <h4 style={styles.infoGroupTitle}>Your Subjects</h4>
+                      <ul style={styles.infoList}>
+                        {teacherSubjects.map((subject) => {
+                          const getStatusBadgeStyle = (status) => {
+                            let bgColor = 'var(--secondary)';
+                            if (status === 'approved') bgColor = 'var(--success)';
+                            if (status === 'rejected') bgColor = 'var(--error)';
+                            if (status === 'pending') bgColor = '#f97316';
+                            return { 
+                              display: 'inline-block',
+                              marginLeft: '0.5rem',
+                              padding: '0.25rem 0.5rem',
+                              borderRadius: '999px',
+                              backgroundColor: bgColor,
+                              color: 'white',
+                              fontSize: '0.75rem',
+                              textTransform: 'capitalize',
+                              fontWeight: '600'
+                            };
+                          };
+                          return (
+                            <li key={subject._id || subject.id}>
+                              {subject.name}
+                              {subject.status && <span style={getStatusBadgeStyle(subject.status)}>{subject.status}</span>}
+                              {!subject.status && subject.approved && <span style={getStatusBadgeStyle('approved')}>approved</span>}
+                              {!subject.status && !subject.approved && <span style={getStatusBadgeStyle('pending')}>pending</span>}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      {teacherSubjects.some(s => s.status === 'pending' || (!s.status && !s.approved)) && (
+                        <div style={{...styles.summaryBox, backgroundColor: '#fef3c7', borderLeft: '4px solid #f97316', color: 'var(--text-primary)'}}>
+                          <strong>⏳ Note:</strong> Pending subjects will appear to students once approved by admin
+                        </div>
+                      )}
+                      {teacherSubjects.some(s => s.status === 'rejected') && (
+                        <div style={{...styles.summaryBox, backgroundColor: '#fee2e2', borderLeft: '4px solid var(--error)', color: 'var(--text-primary)'}}>
+                          <strong>❌ Rejected:</strong> Some of your subjects were rejected. Please review the reason from admin.
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {teacherRequests.length > 0 && (
+                    <div style={styles.infoGroup}>
+                      <h4 style={styles.infoGroupTitle}>Requests for Your Subjects</h4>
+                      <ul style={styles.infoList}>
+                        {teacherRequests.map((req) => (
+                          <li key={req._id}>
+                            {req.student?.name || 'Student'} requested {req.class?.name || 'a class'}
+                            <span style={styles.statusBadge}>{req.status}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              )}
 
               {form.classTimings.length > 0 && (
                 <div style={styles.summaryBox}>

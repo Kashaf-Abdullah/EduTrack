@@ -11,6 +11,7 @@ import publicInfoRoutes from './routes/publicInfoRoutes.js'
 import announcementsRoutes from './routes/announcementRoutes.js'
 import classRequestRoutes from './routes/classRequestRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
+import notificationRoutes from './routes/notificationRoutes.js'
 
 dotenv.config();
 
@@ -29,8 +30,7 @@ app.use('/api/public-info', publicInfoRoutes);
 app.use('/api/announcements', announcementsRoutes);
 app.use('/api/class-requests', classRequestRoutes);
 app.use('/api/admin', adminRoutes);
-
-
+app.use('/api/notifications', notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 

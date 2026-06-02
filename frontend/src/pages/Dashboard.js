@@ -8,6 +8,7 @@ import TeacherDashboard from '../components/TeacherDashbaord/TeacherDashboard';
 import StudentDashboard from '../components/StudentDashbaord/StudentDashboard';
 import ManageUsers from '../components/AdminDashboard/ManageUsers';
 import ManageSubjects from '../components/AdminDashboard/ManageSubjects';
+import ManagePendingSubjects from '../components/AdminDashboard/ManagePendingSubjects';
 import Announcements from '../components/AdminDashboard/Announcements';
 import StudentsList from '../components/AdminDashboard/StudentsList';
 import Attendance from '../components/TeacherDashbaord/Attendance';
@@ -35,6 +36,8 @@ const AdminDashboardContent = () => {
       return <ManageUsers />;
     case '/dashboard/admin/subjects':
       return <ManageSubjects />;
+    case '/dashboard/admin/pending-subjects':
+      return <ManagePendingSubjects />;
     case '/dashboard/admin/students':
       return <StudentsList />;
     case '/dashboard/admin/announcements':

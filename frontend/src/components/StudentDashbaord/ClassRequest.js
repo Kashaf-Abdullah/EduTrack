@@ -110,6 +110,7 @@ import API_BASE_URL from '../../config/api.js';
 
 const ClassRequest = () => {
   const { user, token } = useContext(AuthContext);
+  const studentId = user?._id || user?.id;
   const [availableClasses, setAvailableClasses] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [error, setError] = useState('');
@@ -118,7 +119,7 @@ const ClassRequest = () => {
   const [requesting, setRequesting] = useState(false);
 
   useEffect(() => {
-    if (!token || !user) return;
+    if (!token || !studentId) return;
 
     const fetchData = async () => {
       try {
@@ -129,7 +130,7 @@ const ClassRequest = () => {
         });
 
         // Fetch student's class requests (pending/rejected)
-        const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${user.id}`, {
+        const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${studentId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -160,7 +161,7 @@ const ClassRequest = () => {
     try {
       setRequesting(true);
       await axios.post(`${API_BASE_URL}/class-requests`, 
-        { studentId: user.id, classId }, 
+        { studentId, classId }, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSuccess(`Request sent successfully for ${className}`);
@@ -168,7 +169,7 @@ const ClassRequest = () => {
       setAvailableClasses(prev => prev.filter(c => c._id !== classId));
       
       // Refresh pending requests
-      const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${user.id}`, {
+      const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${studentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPendingRequests(requestsRes.data);
@@ -208,7 +209,7 @@ const ClassRequest = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${user.id}`, {
+      const requestsRes = await axios.get(`${API_BASE_URL}/class-requests/student/${studentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

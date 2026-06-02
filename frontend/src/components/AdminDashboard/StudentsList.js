@@ -338,9 +338,9 @@ function StudentsList() {
 
   return (
     <div style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '2rem',
+      width: '100%',
+      margin: '0',
+      padding: '1rem 0',
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
     }}>
       {/* Header Section */}
