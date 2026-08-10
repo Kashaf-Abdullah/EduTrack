@@ -27,6 +27,7 @@ const Sidebar = ({ isOpen, onClose, user }) => {
         { label: 'Pending Subjects', icon: '⏳', path: '/dashboard/admin/pending-subjects' },
         { label: 'Manage Users', icon: '👥', path: '/dashboard/admin/users' },
         { label: 'Manage Subjects', icon: '📚', path: '/dashboard/admin/subjects' },
+        { label: 'Teachers', icon: '👨‍🏫', path: '/dashboard/admin/teachers' },
         { label: 'Students', icon: '🎓', path: '/dashboard/admin/students' },
         { label: 'Announcements', icon: '📢', path: '/dashboard/admin/announcements' },
         { label: 'Public Info', icon: '🌐', path: '/dashboard/admin/public-info' },

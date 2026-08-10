@@ -44,6 +44,11 @@ export const AuthProvider = ({ children }) => {
     return localStorage.getItem('token') || '';
   });
 
+  const [adminSession, setAdminSession] = useState(() => {
+    const savedAdmin = localStorage.getItem('adminSession');
+    return savedAdmin ? JSON.parse(savedAdmin) : null;
+  });
+
   // Sync localStorage when user or token changes
   useEffect(() => {
     if (user) {
@@ -61,18 +66,43 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
+  useEffect(() => {
+    if (adminSession) {
+      localStorage.setItem('adminSession', JSON.stringify(adminSession));
+    } else {
+      localStorage.removeItem('adminSession');
+    }
+  }, [adminSession]);
+
   const login = (userData, authToken) => {
     setUser(userData);
     setToken(authToken);
   };
 
+  const impersonate = (impersonatedUser, authToken, originalAdmin) => {
+    if (originalAdmin) {
+      setAdminSession(originalAdmin);
+    }
+    setUser(impersonatedUser);
+    setToken(authToken);
+  };
+
+  const restoreAdmin = () => {
+    if (adminSession) {
+      setUser(adminSession.user);
+      setToken(adminSession.token);
+      setAdminSession(null);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setToken('');
+    setAdminSession(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, impersonate, restoreAdmin, adminSession, isImpersonating: Boolean(adminSession) }}>
       {children}
     </AuthContext.Provider>
   );

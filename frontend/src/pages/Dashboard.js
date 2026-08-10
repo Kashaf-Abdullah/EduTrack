@@ -11,6 +11,7 @@ import ManageSubjects from '../components/AdminDashboard/ManageSubjects';
 import ManagePendingSubjects from '../components/AdminDashboard/ManagePendingSubjects';
 import Announcements from '../components/AdminDashboard/Announcements';
 import StudentsList from '../components/AdminDashboard/StudentsList';
+import TeachersList from '../components/AdminDashboard/TeachersList';
 import Attendance from '../components/TeacherDashbaord/Attendance';
 import AttendanceView from '../components/TeacherDashbaord/AttendanceView';
 import Results from '../components/TeacherDashbaord/Results';
@@ -38,6 +39,8 @@ const AdminDashboardContent = () => {
       return <ManageSubjects />;
     case '/dashboard/admin/pending-subjects':
       return <ManagePendingSubjects />;
+    case '/dashboard/admin/teachers':
+      return <TeachersList />;
     case '/dashboard/admin/students':
       return <StudentsList />;
     case '/dashboard/admin/announcements':

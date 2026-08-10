@@ -145,6 +145,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
+import { impersonateUser } from '../api/userApi.js';
 
 function StudentsList() {
   const [students, setStudents] = useState([]);
@@ -153,11 +154,12 @@ function StudentsList() {
   const [success, setSuccess] = useState('');
   const [deleteLoading, setDeleteLoading] = useState(null);
   const [removeLoading, setRemoveLoading] = useState(null);
+  const [impersonating, setImpersonating] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSubject, setFilterSubject] = useState('all');
-  const { token } = useContext(AuthContext);
+  const { token, impersonate } = useContext(AuthContext);
 
   // Fetch students and their subject enrollments
   const fetchStudentsDetails = async () => {
@@ -229,6 +231,23 @@ function StudentsList() {
       setDeleteLoading(null);
     }
   }
+
+  const handleImpersonateStudent = async (student) => {
+    if (!window.confirm(`Impersonate ${student.name} as an admin? This will open ${student.name}'s experience for support/debugging.`)) return;
+    setImpersonating(student.id);
+    try {
+      const data = await impersonateUser(student.id, token);
+      impersonate(data.user, data.token, {
+        user: { id: student.id, name: student.name, email: student.email, role: 'admin' },
+        token
+      });
+      window.location.href = '/dashboard';
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to impersonate student');
+    } finally {
+      setImpersonating(null);
+    }
+  };
 
   const handleViewDetails = (student) => {
     setSelectedStudent(student);
@@ -781,6 +800,25 @@ function StudentsList() {
                           >
                             <span>👁️</span>
                             View Details
+                          </button>
+                          <button
+                            onClick={() => handleImpersonateStudent(student)}
+                            disabled={impersonating === student.id}
+                            style={{
+                              padding: '0.5rem 1rem',
+                              backgroundColor: impersonating === student.id ? 'var(--secondary)' : '#3c6f9c',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '6px',
+                              cursor: impersonating === student.id ? 'not-allowed' : 'pointer',
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.25rem'
+                            }}
+                          >
+                            {impersonating === student.id ? 'Impersonating...' : 'Impersonate'}
                           </button>
                           <button
                             onClick={() => handleDeleteStudent(student.id, student.name)}

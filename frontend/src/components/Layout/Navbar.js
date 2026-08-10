@@ -4,10 +4,14 @@ import NotificationDropdown from '../Notifications/NotificationDropdown';
 import './Navbar.css';
 
 const Navbar = ({ onMenuClick, user }) => {
-  const { logout } = useContext(AuthContext);
+  const { logout, restoreAdmin, isImpersonating } = useContext(AuthContext);
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleRestoreAdmin = () => {
+    restoreAdmin();
   };
 
   return (
@@ -23,8 +27,28 @@ const Navbar = ({ onMenuClick, user }) => {
         {/* Notification Bell */}
         <NotificationDropdown />
 
+        {isImpersonating && (
+          <button
+            onClick={handleRestoreAdmin}
+            style={{
+              marginRight: '0.75rem',
+              border: 'none',
+              borderRadius: '999px',
+              padding: '0.5rem 0.9rem',
+              backgroundColor: '#1d1145',
+              color: 'white',
+              cursor: 'pointer',
+              fontWeight: '600'
+            }}
+          >
+            ↩ Back to Admin
+          </button>
+        )}
+
         <div className="user-menu">
-          <span className="welcome-text">Welcome, {user?.name}</span>
+          <span className="welcome-text">
+            {isImpersonating ? `Impersonating ${user?.name}` : `Welcome, ${user?.name}`}
+          </span>
           <div className="dropdown">
             <button className="user-btn">
               <div className="user-avatar-sm" style={{ backgroundColor: '#e76d89' }}>
