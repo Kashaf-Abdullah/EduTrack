@@ -4,6 +4,11 @@ import dotenv from 'dotenv';
 import User from './models/userModel.js';
 import Subject from './models/subjectModel.js';
 import Attendance from './models/attendanceModel.js';
+import Announcement from './models/announcementModel.js';
+import ClassRequest from './models/classRequest.js';
+import Notification from './models/notificationModel.js';
+import PublicInfo from './models/publicInfoModel.js';
+import Result from './models/resultModel.js';
 
 dotenv.config();
 
@@ -24,6 +29,14 @@ const seedData = async () => {
     await User.deleteMany({});
     await Subject.deleteMany({});
     await Attendance.deleteMany({});
+    await Announcement.deleteMany({});
+    await ClassRequest.deleteMany({});
+    await Notification.deleteMany({});
+    await PublicInfo.deleteMany({});
+    await Result.deleteMany({});
+    await Attendance.collection.dropIndex('classCode_1').catch((error) => {
+      if (error.code !== 27) throw error;
+    });
     console.log('✅ Old data deleted');
 
     // Create Admin
@@ -136,6 +149,9 @@ const seedData = async () => {
         classCode: data.classCode,
         classTimings: data.classTimings,
         courseContent: data.courseContent,
+        approved: true,
+        approvedBy: admin._id,
+        status: 'approved',
       });
       await subject.save();
       subjects.push(subject);
@@ -179,6 +195,107 @@ const seedData = async () => {
       
       console.log(`✅ Attendance Created - 5 sessions for ${subject.name}`);
     }
+
+    // Create Results
+    console.log('📊 Creating Results...');
+    const resultDocuments = [];
+    for (const subject of subjects) {
+      for (const [studentIndex, student] of students.entries()) {
+        resultDocuments.push({
+          subject: subject._id,
+          student: student._id,
+          teacher: subject.teacher,
+          marks: 68 + ((studentIndex * 7 + subject.name.length) % 29),
+          comments: studentIndex % 2 === 0 ? 'Good progress this term.' : 'Keep practicing for an even stronger result.',
+        });
+      }
+    }
+    const results = await Result.insertMany(resultDocuments);
+    console.log(`✅ Results Created - ${results.length} records`);
+
+    // Create Class Requests
+    console.log('📝 Creating Class Requests...');
+    const classRequests = await ClassRequest.insertMany([
+      { student: students[0]._id, class: subjects[0]._id, status: 'approved' },
+      { student: students[1]._id, class: subjects[1]._id, status: 'approved' },
+      { student: students[2]._id, class: subjects[2]._id, status: 'pending' },
+      { student: students[3]._id, class: subjects[0]._id, status: 'pending' },
+      { student: students[4]._id, class: subjects[1]._id, status: 'rejected' },
+    ]);
+    console.log(`✅ Class Requests Created - ${classRequests.length} records`);
+
+    // Create Announcements and Public Information
+    console.log('📢 Creating Announcements and Public Information...');
+    const announcements = await Announcement.insertMany([
+      {
+        type: 'best-student',
+        title: 'Best Student of the Month',
+        description: 'Sara Khan achieved the highest overall performance this month.',
+        featuredUser: students[1]._id,
+        announcedBy: admin._id,
+        visible: true,
+      },
+      {
+        type: 'best-teacher',
+        title: 'Best Teacher of the Month',
+        description: 'Mr. Ahmed Khan is recognised for outstanding student engagement.',
+        featuredUser: teachers[0]._id,
+        announcedBy: admin._id,
+        visible: true,
+      },
+    ]);
+    await PublicInfo.insertMany([
+      {
+        title: 'Welcome to EduTrack',
+        content: 'Use EduTrack to manage classes, attendance, results, and announcements in one place.',
+        visible: true,
+      },
+      {
+        title: 'Midterm Assessments',
+        content: 'Midterm assessments begin next Monday. Please review your subject materials and timetable.',
+        visible: true,
+      },
+    ]);
+    console.log(`✅ Announcements Created - ${announcements.length} records`);
+
+    // Create Notifications for dashboard testing
+    console.log('🔔 Creating Notifications...');
+    const notificationDocuments = [
+      {
+        recipient: teachers[0]._id,
+        type: 'class_request',
+        title: 'New class request',
+        message: `${students[2].name} requested to join ${subjects[2].name}.`,
+        relatedData: { userId: students[2]._id, subjectId: subjects[2]._id, classRequestId: classRequests[2]._id },
+        actionUrl: '/teacher/dashboard',
+      },
+      {
+        recipient: students[0]._id,
+        type: 'result_uploaded',
+        title: 'New result uploaded',
+        message: `Your ${subjects[0].name} result is now available.`,
+        relatedData: { subjectId: subjects[0]._id, resultId: results[0]._id },
+        actionUrl: '/student/dashboard',
+      },
+      {
+        recipient: students[1]._id,
+        type: 'announcement_new',
+        title: 'New announcement',
+        message: 'A new student achievement announcement has been published.',
+        relatedData: { announcementId: announcements[0]._id },
+        actionUrl: '/dashboard',
+      },
+      {
+        recipient: admin._id,
+        type: 'attendance_marked',
+        title: 'Attendance marked',
+        message: `${subjects[0].name} attendance was updated by ${teachers[0].name}.`,
+        relatedData: { subjectId: subjects[0]._id },
+        actionUrl: '/admin/dashboard',
+      },
+    ];
+    const notifications = await Notification.insertMany(notificationDocuments);
+    console.log(`✅ Notifications Created - ${notifications.length} records`);
 
     console.log('');
     console.log('═══════════════════════════════════════════════════════');
