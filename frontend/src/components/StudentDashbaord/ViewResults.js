@@ -133,7 +133,7 @@ const ViewResults = () => {
   };
 
   const getGradeBadgeStyle = (marks) => {
-    const { grade, color } = getGrade(marks);
+    const { color } = getGrade(marks);
     return {
       backgroundColor: color,
       color: 'white',
