@@ -114,7 +114,7 @@
 
 // export default TeacherPendingRequests;
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
@@ -129,7 +129,7 @@ const TeacherPendingRequests = () => {
   const [actionLoading, setActionLoading] = useState(null);
   const [filter, setFilter] = useState('all'); // all, pending, rejected
 
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     if (!token || !teacherId) return;
     try {
       setLoading(true);
@@ -148,11 +148,11 @@ const TeacherPendingRequests = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, teacherId]);
 
   useEffect(() => {
     if (token && teacherId) fetchRequests();
-  }, [token, teacherId]);
+  }, [fetchRequests, token, teacherId]);
 
   const approveRequest = async (requestId, studentName, className) => {
     try {

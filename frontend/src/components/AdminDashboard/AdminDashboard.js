@@ -1,13 +1,9 @@
 
 import React, { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import DashboardLayout from '../Layout/DashboardLayout';
 import ManageUsers from './ManageUsers';
-import ManageSubjects from './ManageSubjects';
-import Announcements from './Announcements';
 import StudentsList from './StudentsList';
 import './AdminDashboard.css';
-import PublicInfoAdmin from '../PublicInfo/PublicInfoAdmin';
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);

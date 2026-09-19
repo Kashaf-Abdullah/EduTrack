@@ -347,7 +347,7 @@
 
 
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
@@ -382,7 +382,7 @@ const StudentAttendance = () => {
   }, [token, user]);
 
   // Fetch student's attendance records
-  const fetchAttendanceData = async () => {
+  const fetchAttendanceData = useCallback(async () => {
     if (!token || !user) return;
     try {
       setRefreshing(true);
@@ -397,11 +397,11 @@ const StudentAttendance = () => {
     } finally {
       setRefreshing(false);
     }
-  };
+  }, [token, user]);
 
   useEffect(() => {
     fetchAttendanceData();
-  }, [token, user]);
+  }, [fetchAttendanceData]);
 
   // Find the latest attendance entry of the student for today
   const getLatestStudentEntry = (subjectId, classCode) => {
@@ -465,7 +465,7 @@ const StudentAttendance = () => {
           },
         ],
       };
-      const response = await axios.post(`${API_BASE_URL}/attendance`, attendancePayload, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.post(`${API_BASE_URL}/attendance`, attendancePayload, { headers: { Authorization: `Bearer ${token}` } });
       setSuccess(signIn ? 'Signed in successfully! ✅' : 'Signed out successfully! ✅');
       setError('');
       setTimeout(() => {

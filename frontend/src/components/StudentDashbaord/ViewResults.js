@@ -349,7 +349,6 @@ const ViewResults = () => {
                 </thead>
                 <tbody>
                   {filteredResults.map((result) => {
-                    const { grade } = getGrade(result.marks);
                     const isPassed = result.marks >= 33;
                     
                     return (

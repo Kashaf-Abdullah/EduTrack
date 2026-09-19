@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
@@ -13,7 +13,7 @@ const ManagePendingSubjects = () => {
   const [actionLoading, setActionLoading] = useState(null);
   const [rejectionReason, setRejectionReason] = useState({});
 
-  const fetchPendingSubjects = async () => {
+  const fetchPendingSubjects = useCallback(async () => {
     try {
       setLoading(true);
       const res = await axios.get(
@@ -28,11 +28,11 @@ const ManagePendingSubjects = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchPendingSubjects();
-  }, [token]);
+  }, [fetchPendingSubjects]);
 
   const approveSubject = async (subjectId, subjectName) => {
     try {

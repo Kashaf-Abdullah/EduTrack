@@ -1,5 +1,4 @@
-import React, { useContext }  from 'react'
-import { AuthContext } from '../../contexts/AuthContext';
+import React from 'react'
 import ViewAttendance from './ViewAttendance';
 import ViewResults from './ViewResults';
 import ClassRequest from './ClassRequest';
@@ -8,13 +7,6 @@ import Announcement from './Announcement';
 import PublicInfo from './PublicInfo';
 
 const StudentDashboard = () => {
-      const { logout } = useContext(AuthContext);
-    
-      const handleLogout = () => {
-        logout();
-        // Optionally, redirect user to login or home page here
-        // e.g., navigate('/login') if you use react-router
-      }
   return (
     <div style={{ padding: '20px' }}>
 <h1>Student Dashboard</h1>

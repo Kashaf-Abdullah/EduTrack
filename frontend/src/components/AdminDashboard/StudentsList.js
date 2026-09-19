@@ -141,7 +141,7 @@
 // export default StudentsList;
 
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
@@ -162,7 +162,7 @@ function StudentsList() {
   const { token, impersonate } = useContext(AuthContext);
 
   // Fetch students and their subject enrollments
-  const fetchStudentsDetails = async () => {
+  const fetchStudentsDetails = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE_URL}/subjects/admin/students`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -174,11 +174,11 @@ function StudentsList() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (token) fetchStudentsDetails();
-  }, [token]);
+  }, [token, fetchStudentsDetails]);
 
   // Remove a student from a specific subject
   async function handleRemoveFromSubject(studentId, subjectId, studentName, subjectName) {

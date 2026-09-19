@@ -118,7 +118,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
 
 const PublicInfoAdmin = () => {
-  const { token, user } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const [publicInfos, setPublicInfos] = useState([]);
   const [form, setForm] = useState({ 
     title: '', 

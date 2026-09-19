@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './NotificationDropdown.css';
 
 const NotificationDropdown = () => {
-  const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification, fetchNotifications } = useNotifications();
+  const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification } = useNotifications();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();

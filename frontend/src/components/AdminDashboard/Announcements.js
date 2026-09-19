@@ -130,7 +130,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
 
 const Announcements = () => {
-  const { token, user } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const [announcements, setAnnouncements] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);

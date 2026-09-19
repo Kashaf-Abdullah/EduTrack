@@ -148,7 +148,7 @@
 
 // export default SubjectCreate;
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useCallback, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
@@ -217,7 +217,7 @@ const SubjectCreate = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const fetchTeacherData = async () => {
+  const fetchTeacherData = useCallback(async () => {
     if (!token || !teacherId) return;
     try {
       setTeacherLoading(true);
@@ -236,11 +236,11 @@ const SubjectCreate = () => {
     } finally {
       setTeacherLoading(false);
     }
-  };
+  }, [token, teacherId]);
 
   useEffect(() => {
     fetchTeacherData();
-  }, [token, teacherId]);
+  }, [fetchTeacherData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -569,18 +569,6 @@ const SubjectCreate = () => {
       borderRadius: '50%',
       animation: 'spin 1s linear infinite'
     }
-  };
-
-  // Add hover effects
-  const hoverStyles = {
-    formInput: { ...styles.formInput, ':hover': { borderColor: 'var(--primary)' } },
-    formSelect: { ...styles.formSelect, ':hover': { borderColor: 'var(--primary)' } },
-    formTextarea: { ...styles.formTextarea, ':hover': { borderColor: 'var(--primary)' } },
-    addTimingBtn: { ...styles.addTimingBtn, ':hover': { backgroundColor: 'var(--success-hover)' } },
-    removeTimingBtn: { ...styles.removeTimingBtn, ':hover': { backgroundColor: 'var(--error-hover)' } },
-    submitBtn: { ...styles.submitBtn, ':hover': { backgroundColor: 'var(--primary-hover)' } },
-    clearBtn: { ...styles.clearBtn, ':hover': { backgroundColor: 'var(--secondary-hover)' } },
-    timingItem: { ...styles.timingItem, ':hover': { borderColor: 'var(--primary)' } }
   };
 
   return (

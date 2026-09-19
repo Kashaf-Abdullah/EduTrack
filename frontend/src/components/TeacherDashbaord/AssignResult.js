@@ -193,7 +193,7 @@
 // };
 
 // export default AssignResult;
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
@@ -262,7 +262,7 @@ const AssignResult = () => {
   }, [selectedSubject, token]);
 
   // Fetch all results assigned by this teacher
-  const fetchResults = async () => {
+  const fetchResults = useCallback(async () => {
     if (!user || !token || !user.id) return;
     
     try {
@@ -277,13 +277,13 @@ const AssignResult = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, token]);
 
   useEffect(() => {
     if (token && user && user.id) {
       fetchResults();
     }
-  }, [user, token]);
+  }, [fetchResults, token, user]);
 
   // Submit new or updated result
   const handleSubmit = async (e) => {
@@ -334,7 +334,7 @@ const AssignResult = () => {
   };
 
   const getGradeBadgeStyle = (marks) => {
-    const { grade, color } = getGrade(marks);
+    const { color } = getGrade(marks);
     return {
       backgroundColor: color,
       color: 'white',

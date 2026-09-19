@@ -116,7 +116,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import API_BASE_URL from '../../config/api.js';
 
 const ManageUsers = () => {
-  const { token, user } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');

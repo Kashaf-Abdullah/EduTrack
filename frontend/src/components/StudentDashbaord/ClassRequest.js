@@ -155,7 +155,7 @@ const ClassRequest = () => {
     };
 
     fetchData();
-  }, [token, user]);
+  }, [token, user, studentId]);
 
   const handleRequestClass = async (classId, className) => {
     try {
