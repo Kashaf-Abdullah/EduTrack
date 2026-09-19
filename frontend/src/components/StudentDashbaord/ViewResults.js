@@ -378,7 +378,7 @@ const ViewResults = () => {
                         </td>
                         <td style={{ padding: '1rem' }}>
                           <span style={getGradeBadgeStyle(result.marks)}>
-                            {grade}
+                            {result.grade}
                           </span>
                         </td>
                         <td style={{ padding: '1rem' }}>
