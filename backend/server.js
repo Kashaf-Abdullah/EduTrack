@@ -80,7 +80,7 @@ connectDB();
 // Test route
 app.get('/', (req, res) => {
   res.json({
-    message: 'Backend API is running'
+    message: 'Backend API is running .'
   });
 });
 
